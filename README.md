@@ -31,7 +31,7 @@ The cleaned dataset consists of 83,782 recipes with the following relevant colum
 - `n_steps`: Number of steps in the recipe.
 
 - `description`: User-provided description of the recipe.
-- 
+  
 - `num_tags`: Number of tags associated with the recipe (engineered feature).
 
 - `calories`: Calories per serving.
@@ -45,21 +45,21 @@ The cleaned dataset consists of 83,782 recipes with the following relevant colum
 
 To prepare the dataset for analysis, several data cleaning steps were performed:
 
-    Parsing the nutrition Column:
-        The nutrition column contained strings representing lists.
-        Extracted individual nutritional components into separate columns: calories, total_fat_PDV, sugar_PDV, sodium_PDV, protein_PDV, saturated_fat_PDV, carbohydrates_PDV.
+  Parsing the nutrition Column:
+        - The nutrition column contained strings representing lists.
+        - Extracted individual nutritional components into separate columns: 'calories', 'total_fat_PDV', 'sugar_PDV', 'sodium_PDV', 'protein_PDV', 'saturated_fat_PDV', 'carbohydrates_PDV'.
 
-    Handling the tags Column:
+  Handling the tags Column:
         Converted the string representations of lists into actual lists.
         Created a new feature num_tags representing the number of tags associated with each recipe.
 
-    Handling Missing Values:
+  Handling Missing Values:
         Identified that average_rating has missing values where recipes have no ratings.
         Decided not to impute missing average_rating values to avoid introducing bias, as missing ratings may indicate new or less popular recipes.
 
-    Ensuring Correct Data Types:
-        Converted the submitted column to datetime format.
+  Ensuring Correct Data Types:
+        Converted the 'submitted' column to datetime format.
         Ensured that description and name are strings.
 
-    Removing Duplicates:
+  Removing Duplicates:
         Checked for duplicate recipe IDs and removed them to ensure data integrity.
