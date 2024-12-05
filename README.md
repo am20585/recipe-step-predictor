@@ -46,6 +46,10 @@ The cleaned dataset consists of 83,782 recipes with the following relevant colum
 To prepare the dataset for analysis, several data cleaning steps were performed:
 
   Parsing the nutrition Column:
+  
+  - `name`: Name of the recipe.
+
+  - `id`: Unique identifier for each recipe.
         - The nutrition column contained strings representing lists.
         - Extracted individual nutritional components into separate columns: 'calories', 'total_fat_PDV', 'sugar_PDV', 'sodium_PDV', 'protein_PDV', 'saturated_fat_PDV', 'carbohydrates_PDV'.
 
