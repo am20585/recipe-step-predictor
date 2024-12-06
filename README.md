@@ -66,3 +66,57 @@ To prepare the dataset for analysis, several data cleaning steps were performed:
 
   Removing Duplicates:
   - Checked for duplicate recipe IDs and removed them to ensure data integrity.
+
+## Framing a Prediction Problem
+
+With a solid understanding of our dataset and initial exploratory analyses, we now define a clear prediction problem that aligns with our overall theme of understanding recipe complexity.
+
+### Prediction Problem Statement
+
+We aim to predict the **number of steps** in a recipe (**`n_steps`**) using features that are available before the recipe steps are fully finalized. By estimating the complexity of a recipe from its attributes, we can help home cooks choose recipes appropriate for their time constraints and skill levels, and assist recipe creators in refining their dishes for targeted audiences.
+
+### Problem Type
+
+Since our target variable, `n_steps`, is a continuous numerical value, this is a **regression problem**. We are not classifying recipes into discrete categories; rather, we are predicting a numerical outcome (the number of steps).
+
+### Response Variable
+
+- **Response Variable**: `n_steps` (Number of steps in a recipe)
+
+We chose `n_steps` because it serves as a direct measure of recipe complexity. Understanding what influences complexity can reveal insights into how preparation time, nutritional factors, and the diversity of tags (e.g., dietary restrictions, meal types, cuisines) shape the effort required to complete a dish.
+
+### Features and Time of Prediction Justification
+
+We will use the following features to predict `n_steps`:
+
+- **`minutes`**: Total preparation time.  
+  *Justification*: Estimated preparation time can be determined from the ingredients, planned cooking methods, and basic recipe structure before finalizing the detailed steps.
+
+- **`num_tags`**: Number of tags associated with the recipe.  
+  *Justification*: Tags are assigned at the time of recipe creation and categorization, so this information is known upfront.
+
+- **Nutritional Information**:  
+  - `calories`
+  - `total_fat_PDV`
+  - `sugar_PDV`
+  - `sodium_PDV`
+  - `protein_PDV`
+  - `saturated_fat_PDV`
+  - `carbohydrates_PDV`  
+  *Justification*: Nutritional values can be estimated from the ingredients and serving sizes before writing out the complete steps. Since recipe developers know what ingredients they plan to use, they can approximate nutritional content early in the process.
+
+By relying solely on information available prior to detailing the step-by-step instructions, we ensure that our prediction does not leak information from the future. In other words, we are not using features that depend on knowing the final number of steps or user feedback that would only be available after the recipe is published.
+
+### Evaluation Metric
+
+We will use **Mean Squared Error (MSE)** as our evaluation metric. MSE is a standard metric for regression tasks and has several advantages:
+
+- **Penalizes Larger Errors**: MSE gives higher weight to larger errors, ensuring that large discrepancies between predicted and actual `n_steps` are penalized more.
+- **Widespread Use**: MSE is a common benchmark for regression models, making results easy to interpret and compare.
+- **Continuous Target**: Since `n_steps` is a continuous target, metrics designed for regression (like MSE) are more appropriate than classification metrics (like accuracy or F1-score).
+
+MSE allows us to quantify how close our predictions are to the actual complexity of recipes. A lower MSE indicates that our model predictions are closely aligned with the true number of steps.
+
+---
+
+With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `n_steps` and evaluate how well our model performs in capturing the complexity of recipes.
