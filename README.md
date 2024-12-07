@@ -1,6 +1,6 @@
 # Predicting Recipe Steps: An Analysis of Food.com Recipes
 
-Predicting Recipe Steps: An Analysis of Food.com Recipes is a data science project conducted at University of Michigan. The project encompasses various stages of analysis, starting from exploratory data analysis to hypothesis testing, creation of baseline models, and concluding with fairness analysis. The primary focus of the project is to investigate the significance of the "first blood" event in League of Legends matches and its impact on match statistics and outcomes.
+Predicting Recipe Steps: An Analysis of Food.com Recipes is a data science project conducted at University of Michigan. The project encompasses various stages of analysis, starting from exploratory data analysis to hypothesis testing, creation of baseline models, and concluding with fairness analysis.
 
 Authors: Naman Jain, Anay Moitra
 
