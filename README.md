@@ -8,11 +8,9 @@ Authors: Naman Jain, Anay Moitra
 ### General Introduction
 The Food.com Recipes and Ratings dataset contains over 80,000 recipes and 700,000 ratings collected from the Food.com website since 2008. Each recipe includes details such as the preparation time, ingredients, steps, nutritional information, tags, and user ratings. This rich dataset provides an excellent opportunity to explore various factors that influence recipe complexity and user preferences.
 
-In the culinary world, understanding what makes a recipe complex or straightforward can significantly impact home cooks, chefs, and recipe developers. The number of steps in a recipe often correlates with the recipe's complexity, preparation time, and required skill level.
+In the culinary world, understanding what makes a recipe low or high calorie can what recipes home cooks, chefs, and recipe developers use.  
 
-The central question we aim to answer is: **What factors influence the number of steps in a recipe?**. 
-
-By analyzing various features such as preparation time, nutritional content, and tags associated with recipes, we hope to uncover patterns that can help predict recipe complexity. This analysis could assist home cooks in selecting recipes that match their skill level and available time, and help recipe developers create recipes that cater to their target audience.
+The central question we aim to answer is: **What factors influence the total number of calories in a recipe?**. 
 
 ### Introduction of Columns
 The cleaned dataset consists of 83,782 rows of recipes with the following relevant columns:
@@ -82,53 +80,46 @@ With a solid understanding of our dataset and initial exploratory analyses, we n
 
 ### Prediction Problem Statement
 
-We aim to predict the **number of steps** in a recipe (**`n_steps`**) using features that are available before the recipe steps are fully finalized. By estimating the complexity of a recipe from its attributes, we can help home cooks choose recipes appropriate for their time constraints and skill levels, and assist recipe creators in refining their dishes for targeted audiences.
+We aim to predict the **number of calories** in a recipe (**`calories`**) using features that are available before the recipe steps are fully finalized. By estimating the complexity of a recipe from its attributes, we can help home cooks choose recipes appropriate for their time constraints and skill levels, and assist recipe creators in refining their dishes for targeted audiences.
 
 ### Problem Type
 
-Since our target variable, `n_steps`, is a continuous numerical value, this is a **regression problem**. We are not classifying recipes into discrete categories; rather, we are predicting a numerical outcome (the number of steps).
+Since our target variable, `calories`, is a continuous numerical value, this is a **regression problem**. We are not classifying recipes into discrete categories; rather, we are predicting a numerical outcome (the number of calories).
 
 ### Response Variable
 
-- **Response Variable**: `n_steps` (Number of steps in a recipe)
+- **Response Variable**: `calories` (Number of calories in a recipe)
 
-We chose `n_steps` because it serves as a direct measure of recipe complexity. Understanding what influences complexity can reveal insights into how preparation time, nutritional factors, and the diversity of tags (e.g., dietary restrictions, meal types, cuisines) shape the effort required to complete a dish.
+We chose `calories` because it serves as an important measure of how healthy a recipe is. Understanding what influences the number of calories in a dish can reveal insights into how preparation time, number of steps, and the diversity of tags (e.g., dietary restrictions, meal types, cuisines) shape the effort required to complete a dish.
 
 ### Features and Time of Prediction Justification
 
-We will use the following features to predict `n_steps`:
+We will use the following features to predict `calories`:
 
 - **`minutes`**: Total preparation time.  
   *Justification*: Estimated preparation time can be determined from the ingredients, planned cooking methods, and basic recipe structure before finalizing the detailed steps.
 
-- **`num_tags`**: Number of tags associated with the recipe.  
+- **`n_steps`**: Total number of steps.  
+  *Justification*: The number of steps are known at the time of recipe creation as they are the basis of preparing the ingredients into the dish. 
+
+- **`num_tags` and `tags`** : Number of tags associated with the recipe and what these tags are.  
   *Justification*: Tags are assigned at the time of recipe creation and categorization, so this information is known upfront.
 
-- **Nutritional Information**:  
-  - `calories`
-  - `total_fat_PDV`
-  - `sugar_PDV`
-  - `sodium_PDV`
-  - `protein_PDV`
-  - `saturated_fat_PDV`
-  - `carbohydrates_PDV`  
-  *Justification*: Nutritional values can be estimated from the ingredients and serving sizes before writing out the complete steps. Since recipe developers know what ingredients they plan to use, they can approximate nutritional content early in the process.
-
-By relying solely on information available prior to detailing the step-by-step instructions, we ensure that our prediction does not leak information from the future. In other words, we are not using features that depend on knowing the final number of steps or user feedback that would only be available after the recipe is published.
+By relying solely on information available prior to detailing the step-by-step instructions, we ensure that our prediction does not leak information from the future. In other words, we are not using features that depend on knowing the actual nutritional information of a recipe before estimating the calories.
 
 ### Evaluation Metric
 
 We will use **Mean Squared Error (MSE)** as our evaluation metric. MSE is a standard metric for regression tasks and has several advantages:
 
-- **Penalizes Larger Errors**: MSE gives higher weight to larger errors, ensuring that large discrepancies between predicted and actual `n_steps` are penalized more.
+- **Penalizes Larger Errors**: MSE gives higher weight to larger errors, ensuring that large discrepancies between predicted and actual `calories` are penalized more.
 - **Widespread Use**: MSE is a common benchmark for regression models, making results easy to interpret and compare.
-- **Continuous Target**: Since `n_steps` is a continuous target, metrics designed for regression (like MSE) are more appropriate than classification metrics (like accuracy or F1-score).
+- **Continuous Target**: Since `calories` is a continuous target, metrics designed for regression (like MSE) are more appropriate than classification metrics (like accuracy or F1-score).
 
-MSE allows us to quantify how close our predictions are to the actual complexity of recipes. A lower MSE indicates that our model predictions are closely aligned with the true number of steps.
+MSE allows us to quantify how close our predictions are to the actual complexity of recipes. A lower MSE indicates that our model predictions are closely aligned with the true number of calories.
 
 ---
 
-With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `n_steps` and evaluate how well our model performs in capturing the complexity of recipes.
+With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `calories` and evaluate how well our model performs in capturing the complexity of recipes.
 
 ## Baseline Model
 For the baseline model, we used a Random Forest Classifier, with the following four features: `kills`, `deaths`, `assists`, and `firstbloodkill`. Among these four features, three of them are quantitative: `kills`, `deaths`, and `assists`. We utilized StandardScaler Transformer to transform them into standard scale, becasue each match has different time length, and therefore the statistics could seem really different without being standardized. The last one `firstbloodkill` is a nominal categorical variable, and it is already in binary form, thus we do not need to perform more encodings.
