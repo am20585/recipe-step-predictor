@@ -67,6 +67,15 @@ To prepare the dataset for analysis, several data cleaning steps were performed:
   Removing Duplicates:
   - Checked for duplicate recipe IDs and removed them to ensure data integrity.
 
+### Univariate Analysis
+
+<iframe
+  src="assets/fig-steps.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
 ## Framing a Prediction Problem
 
 With a solid understanding of our dataset and initial exploratory analyses, we now define a clear prediction problem that aligns with our overall theme of understanding recipe complexity.
