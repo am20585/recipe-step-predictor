@@ -15,7 +15,7 @@ The central question we aim to answer is: **What factors influence the number of
 By analyzing various features such as preparation time, nutritional content, and tags associated with recipes, we hope to uncover patterns that can help predict recipe complexity. This analysis could assist home cooks in selecting recipes that match their skill level and available time, and help recipe developers create recipes that cater to their target audience.
 
 ### Introduction of Columns
-The cleaned dataset consists of 83,782 recipes with the following relevant columns:
+The cleaned dataset consists of 83,782 rows of recipes with the following relevant columns:
 
 - `name`: Name of the recipe.
 
