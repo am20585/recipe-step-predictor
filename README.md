@@ -117,6 +117,10 @@ We will use **Mean Squared Error (MSE)** as our evaluation metric. MSE is a stan
 
 MSE allows us to quantify how close our predictions are to the actual complexity of recipes. A lower MSE indicates that our model predictions are closely aligned with the true number of steps.
 
+---
+
+With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `n_steps` and evaluate how well our model performs in capturing the complexity of recipes.
+
 ## Baseline Model
 For the baseline model, we used a Random Forest Classifier, with the following four features: `kills`, `deaths`, `assists`, and `firstbloodkill`. Among these four features, three of them are quantitative: `kills`, `deaths`, and `assists`. We utilized StandardScaler Transformer to transform them into standard scale, becasue each match has different time length, and therefore the statistics could seem really different without being standardized. The last one `firstbloodkill` is a nominal categorical variable, and it is already in binary form, thus we do not need to perform more encodings.
 
@@ -128,7 +132,3 @@ In our final model, we added two more features: `monsterkills` and `minionkills`
 Our final model also uses a Random Forest Classifier in alignment with the baseline model. The two additional features we added (`monsterkills` and `minionkills`) are both quantitative features, so we used StandardScaler Transformer to perform encodings of these two columns. In terms of tuning hyperparameters, the two hyperparameters we chose are: max depth and the number of estimators for the random forest classifier. We are testing max depth of 2 through 200, with each of 20 steps. For the number of estimators, we are testing from 2 to 100, with each of 10 steps. Using the technique of grid search to find the best hyperparameters, we found out that the best max depth is 22 and the best number of estimators is 42. 
 
 The accuracy score is now **0.9993**, meaning our model is able to correctly predict **99.93%** of our data. This score is super high! If we now take a look into the F-1 score, it is 99.84%, meaning both of our precision and recall are close to 1. We have achieved huge improvement in both evaluation metrics, and this improvement suggests that our adjustment to the model is effective in terms of prediction power.
-
----
-
-With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `n_steps` and evaluate how well our model performs in capturing the complexity of recipes.
