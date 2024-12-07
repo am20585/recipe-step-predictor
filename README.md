@@ -70,7 +70,7 @@ To prepare the dataset for analysis, several data cleaning steps were performed:
 ### Univariate Analysis
 
 <iframe
-  src="assets/fig-steps.html"
+  src="assets/fig_steps.html"
   width="800"
   height="600"
   frameborder="0"
