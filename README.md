@@ -1,7 +1,6 @@
 # Predicting Recipe Steps: An Analysis of Food.com Recipes
 
-Predicting Recipe Steps: An Analysis of Food.com Recipes is a data science project conducted at University of Michigan. The project encompasses various stages of analysis, starting from exploratory data analysis to hypothesis testing, creation of baseline models, and concluding with fairness analysis.
-
+Predicting Recipe Steps: An Analysis of Food.com Recipes is a data science project conducted at University of Michigan. The project encompasses various stages of analysis, starting from exploratory data analysis to creating various models.
 Authors: Naman Jain, Anay Moitra
 
 ## Introduction
@@ -38,6 +37,10 @@ The cleaned dataset consists of 83,782 rows of recipes with the following releva
 - `total_fat_PDV, sugar_PDV, sodium_PDV, protein_PDV, saturated_fat_PDV, carbohydrates_PDV`: Nutritional information as percentage of daily values (engineered features).
   
 - `average_rating`: Average user rating of the recipe.
+
+- `ingredients`: List of all ingredients in the recipe
+ 
+- `n_ingredients`: Number of ingredients in the recipe
 
 ## Data Cleaning and Exploratory Data Analysis
 ### Data Cleaning
