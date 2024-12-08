@@ -102,6 +102,14 @@ Pivot Table: n_ingredients and n_steps
 |               4 |   6.32002 |
 |               5 |   7.12584 |
 
+Grouped Table: Aggregates of n_ingredients and n_steps
+   n_ingredients  average_n_steps  recipe_count
+0              1         7.571429            14
+1              2         5.931727           747
+2              3         5.613151          2342
+3              4         6.320018          4481
+4              5         7.125836          6580
+
 This pivot table reveals that recipes with fewer ingredients tend to have fewer steps on average, but the relationship is not strictly linear. For example, recipes with one ingredient have a higher average number of steps than those with two or three ingredients. This could indicate that recipes with very few ingredients might involve more complex cooking techniques, while those with moderate ingredient counts might be simpler to prepare.
 
 ### Imputation
