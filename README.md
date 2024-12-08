@@ -80,16 +80,18 @@ This is what our cleaned data looks like:
 | 2000 meatloaf                        | 475785 |        90 | ['time-to-make', 'course', 'main-ingredient', 'preparation', 'main-dish', 'potatoes', 'vegetables', '4-hours-or-less', 'meatloaf', 'simply-potatoes2']                                                                                                                                             |        17 | ['meatloaf mixture', 'unsmoked bacon', 'goat cheese', 'unsalted butter', 'eggs', 'baby spinach', 'yellow onion', 'red bell pepper', 'simply potatoes shredded hash browns', 'fresh garlic', 'kosher salt', 'white pepper', 'olive oil'] |              13 |      267   |              30 |          12 |           12 |            29 |                  48 |                   2 |
 
 ### Univariate Analysis
-Data of the number of steps.
 <iframe src="assets/fig_steps.html" width="800" height="600" frameborder="0" ></iframe>
 
-### Bivariate Analysis
+This histogram shows the distribution of the number of steps (n_steps) in recipes. The plot reveals that most recipes have a relatively low number of steps, with a sharp decline as the number of steps increases. This suggests that simpler recipes (with fewer steps) are far more common, and complex recipes with many steps are rare. This observation highlights the prevalence of simple recipes and indicates that factors like ingredient count may play a significant role in determining the complexity of a recipe.
 
+### Bivariate Analysis
 <iframe src="assets/fig_steps_ingredients.html" width="800" height="600" frameborder="0" ></iframe>
+
+This scatter plot shows the relationship between the number of steps (n_steps) and the number of ingredients in recipes. The trend shows that as the number of ingredients increases, the number of steps tends to spread out, with some recipes having significantly more steps. However, the relationship is not strictly linear, which suggests that factors other than ingredient count, such as preparation complexity or cooking techniques, may also influence the number of steps in a recipe. This supports our investigation into what drives recipe complexity.
 
 ### Interesting Aggregates
 
-We created a pivot table to ...
+I created a pivot table to examine the relationship between the number of ingredients (`n_ingredients`) and the average number of steps (`n_steps`) in recipes. This analysis helps identify how the recipe complexity changes with varying ingredient counts. The first few rows of the pivot table are shown below:
 
 Pivot Table: n_ingredients and n_steps
 |   n_ingredients |   n_steps |
@@ -99,6 +101,10 @@ Pivot Table: n_ingredients and n_steps
 |               3 |   5.61315 |
 |               4 |   6.32002 |
 |               5 |   7.12584 |
+
+This pivot table reveals that recipes with fewer ingredients tend to have fewer steps on average, but the relationship is not strictly linear. For example, recipes with one ingredient have a higher average number of steps than those with two or three ingredients. This could indicate that recipes with very few ingredients might involve more complex cooking techniques, while those with moderate ingredient counts might be simpler to prepare.
+
+### Imputation
 
 ## Framing a Prediction Problem
 
@@ -122,11 +128,8 @@ We chose `n_steps` because it serves as a direct measure of recipe complexity. U
 
 We will use the following features to predict `n_steps`:
 
-- **`minutes`**: Total preparation time.  
-  *Justification*: Estimated preparation time can be determined from the ingredients, planned cooking methods, and basic recipe structure before finalizing the detailed steps.
-
-- **`num_tags`**: Number of tags associated with the recipe.  
-  *Justification*: Tags are assigned at the time of recipe creation and categorization, so this information is known upfront.
+- **`n_ingredients`**: Number of ingredients associated with the recipe.  
+  *Justification*: Ingredients are chosen at the time of recipe creation and categorization, so this information is known upfront.
 
 - **Nutritional Information**:  
   - `calories`
