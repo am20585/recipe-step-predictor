@@ -138,13 +138,15 @@ We will use the following features to predict `n_steps`:
 By relying solely on information available prior to detailing the step-by-step instructions, we ensure that our prediction does not leak information from the future. In other words, we are not using features that depend on knowing the final number of steps or user feedback that would only be available after the recipe is published.
 
 ### Evaluation Metric
-We will use **R-squared (R²)** as our evaluation metric. R² is a standard metric for regression tasks and has several advantages:
-
-- **Measures Explained Variance**: R² indicates the proportion of the variance in the target variable (the number of steps) that is explained by the model, providing a clear understanding of the model's explanatory power.
+We will use both **Mean Absolute Error** and **R-squared (R²)** as our evaluation metric. 
+R² is a standard metric for regression tasks and has several advantages:
+- **Measures Explained Variance**: R² indicates the proportion of the variance in the target variable (the number of steps) that is explained by the model, providing a clear understanding of the model's explanatory power. 
 - **Interpretability**: R² values range from 0 to 1 (or can be negative for poor models), making it easy to interpret how well the model fits the data. A higher R² means the model's predictions are more aligned with the actual values.
-- **Continuous Target**: Since n_steps is a continuous target, metrics like R² that assess model fit for regression tasks are more appropriate than classification metrics (like accuracy or F1-score).
-
+- 
 R² allows us to assess how well our model is capturing the relationship between the number of ingredients, calories, nutrition, and the number of steps in a recipe. A higher R² indicates that the model is effectively explaining the variability in the number of steps.
+MAE offers key advantages for our dataset as well
+- **Interpretability**: MAE is easy to understand because it's the average of absolute differences between predicted and actual values. This gives a direct, intuitive sense of how far off the model’s predictions are, on average.
+Together, R² will help us understand how well the model captures the overall variance in the data, while MAE will provide a sense of the average error magnitude, ensuring both model fit and prediction accuracy are considered.
 
 ---
 
@@ -153,12 +155,11 @@ With our prediction problem defined, our response variable chosen, and our metri
 ## Baseline Model
 For the baseline model, we created a regression model, with the following two features: `total_fat_PDV` and `protein_PDV`. Both of these features are quantitative and we chose these two features initially as we predict meals with high proportions of these nutritional values may be more complicated and have a high number of steps.
 
-FIX:
-After fitting the model, our r-squared value is **0.1**. This is quite a low r-squared value showing that these two variables are quite poor predictors of number of steps. Our model still has large improvement space, and we will improve it through adding more features, and tuning hyperparameters in the next section. 
+After fitting the model, r-squared value is **0.1**. This is quite a low r-squared value showing that these two variables are quite poor predictors of number of steps. However, our Mean Absolute Error is **4.5363** showing our model estimated steps with only about a 4.5 step error. Our model still has large improvement space, and we will improve it through adding more features, and tuning hyperparameters in the next section. 
 
 ## Final Model
 In our final model, we added two more features: `n_ingredients` and `calories`. We believe these two features have a high impact on the number of steps as when increasing the number of ingredients of a dish, we expect utilizing all those ingredients would typically increase the number of steps. We also added calories for a similar reason as using total fat and protein.
 
-Our final model also uses a Linear Regression in alignment with the baseline model. The two additional features we added (`n_ingredients` and `calories`) are both quantitative features, so we used StandardScaler Transformer to perform encodings of these two columns. We utilized GridSearchCV for. hyperparameter turing
+Our final model also uses a Linear Regression in alignment with the baseline model. The two additional features we added (`n_ingredients` and `calories`) are both quantitative features, so we used StandardScaler Transformer to perform encodings of these two columns. We utilized GridSearchCV for hyperparameter turing as well.
 
-Our R-squared value is now **0.2**, meaning our model is able to correctly predict **99.93%** of our data. This score is super high! We have achieved significant improvement in our evaluation metric, suggesting that we made an effective adjustment in our final model.
+Our new Mean Absolute Error is down to **3.984** showing our estimations are only about 4 steps off on average. Our R-squared value is now **0.2193**, meaning our model has improved quite a lot in this aspect as well. We have achieved some improvement in both of our evaluation metrics, suggesting that we made an effective adjustment in our final model.
