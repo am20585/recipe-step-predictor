@@ -148,7 +148,7 @@ With our prediction problem defined, our response variable chosen, and our metri
 ## Baseline Model
 Our baseline model is a **linear regression** model aimed at predicting the number of steps (`n_steps`). We used two quantitative features: `total_fat_PDV` and `protein_PDV`. These features were chosen based on the assumption that recipes with higher fat and protein content might be more complex and require a greater number of steps.
 
-After fitting the model, the R² value on the test set was 0.027, which indicates that only 2.7% of the variance in `n_steps` was explained by these features. Although this is quite low, the Mean Absolute Error (MAE) was 4.5363, which suggests the model’s predictions were off by an average of about 4.5 steps. This result shows that the selected features provide only a weak relationship with recipe complexity but still offer a rough approximation of the number of steps.
+After fitting the model, the R² value on the test set was 0.027, which indicates that only 2.7% of the variance in `n_steps` was explained by these features. Although this is quite low, the MAE was 4.5363, which suggests the model’s predictions were off by an average of about 4.5 steps. This result shows that the selected features provide only a weak relationship with recipe complexity but still offer a rough approximation of the number of steps.
 
 While the baseline model’s performance leaves a lot of room for improvement, it establishes a foundation for development. For our final model, we will explore adding more features and applying hyperparameter tuning to enhance predictive performance and better capture the complexity of recipes.
 
