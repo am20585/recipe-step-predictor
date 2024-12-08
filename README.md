@@ -80,10 +80,23 @@ This is what our cleaned data looks like:
 Data of the number of steps.
 <iframe src="assets/fig_steps.html" width="800" height="600" frameborder="0" ></iframe>
 This shows the distribution of the number of steps.
-
+<iframe src="assets/fig_ingredients.html" width="800" height="600" frameborder="0" ></iframe>
 ### Bivariate Analysis
 
 <iframe src="assets/fig_steps_ingredients.html" width="800" height="600" frameborder="0" ></iframe>
+
+### Interesting Aggregates
+
+We created a pivot table to ...
+
+Pivot Table: n_ingredients and n_steps
+|   n_ingredients |   n_steps |
+|----------------:|----------:|
+|               1 |   7.57143 |
+|               2 |   5.93173 |
+|               3 |   5.61315 |
+|               4 |   6.32002 |
+|               5 |   7.12584 |
 
 ## Framing a Prediction Problem
 
