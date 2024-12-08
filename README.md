@@ -138,28 +138,27 @@ We will use the following features to predict `n_steps`:
 By relying solely on information available prior to detailing the step-by-step instructions, we ensure that our prediction does not leak information from the future. In other words, we are not using features that depend on knowing the final number of steps or user feedback that would only be available after the recipe is published.
 
 ### Evaluation Metric
+We will use **R-squared (R²)** as our evaluation metric. R² is a standard metric for regression tasks and has several advantages:
 
-We will use **Mean Squared Error (MSE)** as our evaluation metric. MSE is a standard metric for regression tasks and has several advantages:
+- **Measures Explained Variance**: R² indicates the proportion of the variance in the target variable (the number of steps) that is explained by the model, providing a clear understanding of the model's explanatory power.
+- **Interpretability**: R² values range from 0 to 1 (or can be negative for poor models), making it easy to interpret how well the model fits the data. A higher R² means the model's predictions are more aligned with the actual values.
+- **Continuous Target**: Since n_steps is a continuous target, metrics like R² that assess model fit for regression tasks are more appropriate than classification metrics (like accuracy or F1-score).
 
-- **Penalizes Larger Errors**: MSE gives higher weight to larger errors, ensuring that large discrepancies between predicted and actual `n_steps` are penalized more.
-- **Widespread Use**: MSE is a common benchmark for regression models, making results easy to interpret and compare.
-- **Continuous Target**: Since `n_steps` is a continuous target, metrics designed for regression (like MSE) are more appropriate than classification metrics (like accuracy or F1-score).
-
-MSE allows us to quantify how close our predictions are to the actual complexity of recipes. A lower MSE indicates that our model predictions are closely aligned with the true number of steps.
+R² allows us to assess how well our model is capturing the relationship between the number of ingredients, calories, nutrition, and the number of steps in a recipe. A higher R² indicates that the model is effectively explaining the variability in the number of steps.
 
 ---
 
 With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `n_steps` and evaluate how well our model performs in capturing the complexity of recipes.
 
 ## Baseline Model
-For the baseline model, we created a regression model, with the following two features: `n_ingredients` and `calories`. Both of these features are quantitative.
+For the baseline model, we created a regression model, with the following two features: `total_fat_PDV` and `protein_PDV`. Both of these features are quantitative and we chose these two features initially as we predict meals with high proportions of these nutritional values may be more complicated and have a high number of steps.
 
 FIX:
-After fitting the model, our accuracy score on the training data is **0.7910**. This means that our model is able to correctly predict **79.10%** of data. This accuracy score may sound really high, but it is quite misleading since our data is unbalanced. The F-1 score of this model is **7.68%** which is extremely low. Such a low F-1 score is due to a low Recall of 0.043, as our model has many false negatives. Our model still has large improvement space, and we will improve it through adding more features, and tuning hyperparameters in the next section. 
+After fitting the model, our r-squared value is **0.1**. This is quite a low r-squared value showing that these two variables are quite poor predictors of number of steps. Our model still has large improvement space, and we will improve it through adding more features, and tuning hyperparameters in the next section. 
 
 ## Final Model
-In our final model, we added two more features: `monsterkills` and `minionkills`. We are adding these two features into our model because we believe in the LOL game, the champions in jungle positions usually have higher damage, so they are able to kill more minions compared to other positions at the same amount of time. Moreover, the main job of the jungle position in the game is to kill the monsters, so we believe jungle positions should have a relatively high `monsterkills` number. Additionally, `minion kills` reflect a player's ability to efficiently farm gold and experience, which are crucial for scaling and gaining advantages in the game. Therefore, we expect that both `monsterkills` and `minionkills` will provide valuable predictive power in our final model, allowing us to better understand the factors influencing victory in League of Legends matches.
+In our final model, we added two more features: `n_ingredients` and `calories`. We believe these two features have a high impact on the number of steps as when increasing the number of ingredients of a dish, we expect utilizing all those ingredients would typically increase the number of steps. We also added calories for a similar reason as using total fat and protein.
 
-Our final model also uses a Random Forest Classifier in alignment with the baseline model. The two additional features we added (`monsterkills` and `minionkills`) are both quantitative features, so we used StandardScaler Transformer to perform encodings of these two columns. In terms of tuning hyperparameters, the two hyperparameters we chose are: max depth and the number of estimators for the random forest classifier. We are testing max depth of 2 through 200, with each of 20 steps. For the number of estimators, we are testing from 2 to 100, with each of 10 steps. Using the technique of grid search to find the best hyperparameters, we found out that the best max depth is 22 and the best number of estimators is 42. 
+Our final model also uses a Linear Regression in alignment with the baseline model. The two additional features we added (`n_ingredients` and `calories`) are both quantitative features, so we used StandardScaler Transformer to perform encodings of these two columns. We utilized GridSearchCV for. hyperparameter turing
 
-The accuracy score is now **0.9993**, meaning our model is able to correctly predict **99.93%** of our data. This score is super high! If we now take a look into the F-1 score, it is 99.84%, meaning both of our precision and recall are close to 1. We have achieved huge improvement in both evaluation metrics, and this improvement suggests that our adjustment to the model is effective in terms of prediction power.
+Our R-squared value is now **0.2**, meaning our model is able to correctly predict **99.93%** of our data. This score is super high! We have achieved significant improvement in our evaluation metric, suggesting that we made an effective adjustment in our final model.
