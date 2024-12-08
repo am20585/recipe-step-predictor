@@ -140,8 +140,9 @@ MSE allows us to quantify how close our predictions are to the actual complexity
 With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `n_steps` and evaluate how well our model performs in capturing the complexity of recipes.
 
 ## Baseline Model
-For the baseline model, we used a Random Forest Classifier, with the following four features: `kills`, `deaths`, `assists`, and `firstbloodkill`. Among these four features, three of them are quantitative: `kills`, `deaths`, and `assists`. We utilized StandardScaler Transformer to transform them into standard scale, becasue each match has different time length, and therefore the statistics could seem really different without being standardized. The last one `firstbloodkill` is a nominal categorical variable, and it is already in binary form, thus we do not need to perform more encodings.
+For the baseline model, we created a regression model, with the following two features: `n_ingredients` and `calories`. Both of these features are quantitative.
 
+FIX:
 After fitting the model, our accuracy score on the training data is **0.7910**. This means that our model is able to correctly predict **79.10%** of data. This accuracy score may sound really high, but it is quite misleading since our data is unbalanced. The F-1 score of this model is **7.68%** which is extremely low. Such a low F-1 score is due to a low Recall of 0.043, as our model has many false negatives. Our model still has large improvement space, and we will improve it through adding more features, and tuning hyperparameters in the next section. 
 
 ## Final Model
