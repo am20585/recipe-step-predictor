@@ -77,13 +77,13 @@ This is what our cleaned data looks like:
 | 2000 meatloaf                        | 475785 |        90 | ['time-to-make', 'course', 'main-ingredient', 'preparation', 'main-dish', 'potatoes', 'vegetables', '4-hours-or-less', 'meatloaf', 'simply-potatoes2']                                                                                                                                             |        17 | ['meatloaf mixture', 'unsmoked bacon', 'goat cheese', 'unsalted butter', 'eggs', 'baby spinach', 'yellow onion', 'red bell pepper', 'simply potatoes shredded hash browns', 'fresh garlic', 'kosher salt', 'white pepper', 'olive oil'] |              13 |      267   |              30 |          12 |           12 |            29 |                  48 |                   2 |
 
 ### Univariate Analysis
+Data of the number of steps.
+<iframe src="assets/fig_steps.html" width="800" height="600" frameborder="0" ></iframe>
+This shows the distribution of the number of steps.
 
-<iframe
-  src="assets/fig_steps.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
+### Bivariate Analysis
+
+<iframe src="assets/fig_steps_ingredients.html" width="800" height="600" frameborder="0" ></iframe>
 
 ## Framing a Prediction Problem
 
