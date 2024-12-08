@@ -79,8 +79,6 @@ This is what our cleaned data looks like:
 ### Univariate Analysis
 Data of the number of steps.
 <iframe src="assets/fig_steps.html" width="800" height="600" frameborder="0" ></iframe>
-This shows the distribution of the number of steps.
-<iframe src="assets/fig_ingredients.html" width="800" height="600" frameborder="0" ></iframe>
 
 ### Bivariate Analysis
 
