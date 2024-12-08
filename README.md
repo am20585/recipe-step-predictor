@@ -1,6 +1,7 @@
 # Predicting Recipe Steps: An Analysis of Food.com Recipes
 
 Predicting Recipe Steps: An Analysis of Food.com Recipes is a data science project conducted at University of Michigan. The project encompasses various stages of analysis, starting from exploratory data analysis to creating various models.
+
 Authors: Naman Jain, Anay Moitra
 
 ## Introduction
@@ -11,7 +12,7 @@ In the culinary world, understanding what makes a recipe complex or straightforw
 
 The central question we aim to answer is: **What factors influence the number of steps in a recipe?**. 
 
-By analyzing various features such as preparation time, nutritional content, and tags associated with recipes, we hope to uncover patterns that can help predict recipe complexity. This analysis could assist home cooks in selecting recipes that match their skill level and available time, and help recipe developers create recipes that cater to their target audience.
+By analyzing various features such as ingredients, nutritional content, and tags associated with recipes, we hope to find patterns that can help predict recipe complexity. This analysis could assist home cooks in selecting recipes that match their skill level and available time, and help recipe developers create recipes that cater to their target audience.
 
 ### Introduction of Columns
 The cleaned dataset consists of 83,782 rows of recipes with the following relevant columns:
@@ -28,15 +29,9 @@ The cleaned dataset consists of 83,782 rows of recipes with the following releva
 
 - `n_steps`: Number of steps in the recipe.
 
-- `description`: User-provided description of the recipe.
-  
-- `num_tags`: Number of tags associated with the recipe (engineered feature).
-
 - `calories`: Calories per serving.
 
 - `total_fat_PDV, sugar_PDV, sodium_PDV, protein_PDV, saturated_fat_PDV, carbohydrates_PDV`: Nutritional information as percentage of daily values (engineered features).
-  
-- `average_rating`: Average user rating of the recipe.
 
 - `ingredients`: List of all ingredients in the recipe
  
@@ -45,30 +40,30 @@ The cleaned dataset consists of 83,782 rows of recipes with the following releva
 ## Data Cleaning and Exploratory Data Analysis
 ### Data Cleaning
 
-To prepare the dataset for analysis, several data cleaning steps were performed:
+To prepare the dataset for analysis, a few data cleaning steps were performed:
 
-  Parsing the nutrition Column:
-  - The nutrition column contained strings representing lists.
+  Parsing the `nutrition` Column:
+  - The `nutrition` column contained strings representing lists.
   - Extracted individual nutritional components into separate columns: `calories`, `total_fat_PDV`, `sugar_PDV`, `sodium_PDV`, `protein_PDV`, `saturated_fat_PDV`, `carbohydrates_PDV`.
 
-  Handling the tags Column:
+  By extracting individual components from the `nutrition` column, these variables allowed us to include specific nutritional factors as predictors in our models. For example, understanding the relationship between `protein_PDV` and `n_steps` helped identify how recipe complexity correlates with nutrition. Without this step, the nutrition data would have been unusable due to its string-based format.
+  
+  Handling the `tags` Column:
   - Converted the string representations of lists into actual lists.
-  - Created a new feature `num_tags` representing the number of tags associated with each recipe.
+  - Flattened all tags to identify unique tags across recipes.
+  - Created a sorted list of unique tags to prepare for later one-hot encoding.
+
+  Converting the `tags` column into lists and identifying unique tags helped us to engineer categorical features that describe the nature of recipes. For example, one-hot encoding tags like `easy` and `dessert` can provide valuable information for predicting `n_steps`. This step has qualitative aspects of the recipes, which was important in exploring patterns such as whether simpler tags are associated with fewer steps.
 
   Merging Average Ratings:
-  - Loaded the interactions dataset and calculated the average rating for each recipe.
-  - Merged the `average ratings` back into the recipes dataset to create the average_rating column.
+  - Loaded the `interactions` dataset and calculated the average rating for each recipe.
+  - Merged the `average ratings` back into the `recipes` dataset to create the `average_rating` column.
 
   Handling Missing Values:
   - Identified that `average_rating` has missing values where recipes have no ratings.
   - Decided *not* to impute missing `average_rating` values to avoid introducing bias, as missing ratings may indicate new or less popular recipes.
 
-  Ensuring Correct Data Types:
-  - Converted the `submitted` column to datetime format.
-  - Ensured that `description` and `name` are strings.
-
-  Removing Duplicates:
-  - Checked for duplicate recipe IDs and removed them to ensure data integrity.
+  Adding `average_rating` provided an important metric for evaluating the popularity or perceived quality of recipes. Although it had missing values for unrated recipes, leaving these values as `NaN` avoided introducing bias by imputing artificial ratings. This decision preserved the integrity of the analysis and made sure that if we had done predictions involving `average_rating`, they would not skewed by incorrect assumptions about missing values.
 
 This is what our cleaned data looks like:
 | name                                 |     id |   minutes | tags                                                                                                                                                                                                                                                                                               |   n_steps | ingredients                                                                                                                                                                                                                             |   n_ingredients |   calories |   total_fat_PDV |   sugar_PDV |   sodium_PDV |   protein_PDV |   saturated_fat_PDV |   carbohydrates_PDV |
@@ -80,18 +75,22 @@ This is what our cleaned data looks like:
 | 2000 meatloaf                        | 475785 |        90 | ['time-to-make', 'course', 'main-ingredient', 'preparation', 'main-dish', 'potatoes', 'vegetables', '4-hours-or-less', 'meatloaf', 'simply-potatoes2']                                                                                                                                             |        17 | ['meatloaf mixture', 'unsmoked bacon', 'goat cheese', 'unsalted butter', 'eggs', 'baby spinach', 'yellow onion', 'red bell pepper', 'simply potatoes shredded hash browns', 'fresh garlic', 'kosher salt', 'white pepper', 'olive oil'] |              13 |      267   |              30 |          12 |           12 |            29 |                  48 |                   2 |
 
 ### Univariate Analysis
+We start with performing univariate analysis to examine the distribution of single variables. We looked at the distribution of steps in recipes which is show below:
+
 <iframe src="assets/fig_steps.html" width="800" height="600" frameborder="0" ></iframe>
 
-This histogram shows the distribution of the number of steps (n_steps) in recipes. The plot reveals that most recipes have a relatively low number of steps, with a sharp decline as the number of steps increases. This suggests that simpler recipes (with fewer steps) are far more common, and complex recipes with many steps are rare. This observation highlights the prevalence of simple recipes and indicates that factors like ingredient count may play a significant role in determining the complexity of a recipe.
+The plot shows that most recipes have a relatively low number of steps, with a sharp decline as the number of steps increases. This suggests that simpler recipes (with fewer steps) are far more common, and complex recipes with many steps are rare. This observation also highlights the prevalence of simple recipes and indicates that factors like ingredient count may play a significant role in determining the complexity of a recipe.
 
 ### Bivariate Analysis
+We then performed bivariate analysis to examine the relationship of different variables. We looked at the relationship between the number of steps and the number of ingredients in recipes which is show below:
+
 <iframe src="assets/fig_steps_ingredients.html" width="800" height="600" frameborder="0" ></iframe>
 
-This scatter plot shows the relationship between the number of steps (n_steps) and the number of ingredients in recipes. The trend shows that as the number of ingredients increases, the number of steps tends to spread out, with some recipes having significantly more steps. However, the relationship is not strictly linear, which suggests that factors other than ingredient count, such as preparation complexity or cooking techniques, may also influence the number of steps in a recipe. This supports our investigation into what drives recipe complexity.
+The trend shows that as the number of ingredients increases, the number of steps tends to spread out, with some recipes having significantly more steps. However, the relationship is not strictly linear, which suggests that factors other than ingredient count, such as preparation complexity or cooking techniques, may also influence the number of steps in a recipe. This supports our investigation into what drives recipe complexity.
 
 ### Interesting Aggregates
 
-I created a pivot table to examine the relationship between the number of ingredients (`n_ingredients`) and the average number of steps (`n_steps`) in recipes. This analysis helps identify how the recipe complexity changes with varying ingredient counts. The first few rows of the pivot table are shown below:
+We also created a pivot table to examine the relationship between the number of ingredients and the average number of steps in recipes. This analysis helps identify how the recipe complexity changes with varying ingredient counts. The first few rows of the pivot table are shown below:
 
 Pivot Table: n_ingredients and n_steps
 |   n_ingredients |   n_steps |
@@ -102,35 +101,21 @@ Pivot Table: n_ingredients and n_steps
 |               4 |   6.32002 |
 |               5 |   7.12584 |
 
-Grouped Table: Aggregates of n_ingredients and n_steps
-   n_ingredients  average_n_steps  recipe_count
-0              1         7.571429            14
-1              2         5.931727           747
-2              3         5.613151          2342
-3              4         6.320018          4481
-4              5         7.125836          6580
-
-This pivot table reveals that recipes with fewer ingredients tend to have fewer steps on average, but the relationship is not strictly linear. For example, recipes with one ingredient have a higher average number of steps than those with two or three ingredients. This could indicate that recipes with very few ingredients might involve more complex cooking techniques, while those with moderate ingredient counts might be simpler to prepare.
+This pivot table shows that recipes with fewer ingredients tend to have fewer steps on average, but the relationship is not strictly linear. For example, recipes with one ingredient have a higher average number of steps than those with two or three ingredients. This could indicate that recipes with very few ingredients might involve more complex cooking techniques, while those with moderate ingredient counts might be simpler to prepare.
 
 ### Imputation
 
+We also saw that some of our columns had missing values. These columns were `name`, `description`, and `average rating`. We decided to **not** impute these values as none of these columns were relavent to us and imputing or not imputing values would have **no** effect on our analysis.
+
 ## Framing a Prediction Problem
 
-With a solid understanding of our dataset and initial exploratory analyses, we now define a clear prediction problem that aligns with our overall theme of understanding recipe complexity.
+With a solid understanding of our dataset and initial exploratory analyses, we now defined a clear prediction problem that aligns with our overall theme of understanding recipe complexity.
 
 ### Prediction Problem Statement
 
-We aim to predict the **number of steps** in a recipe (**`n_steps`**) using features that are available before the recipe steps are fully finalized. By estimating the complexity of a recipe from its attributes, we can help home cooks choose recipes appropriate for their time constraints and skill levels, and assist recipe creators in refining their dishes for targeted audiences.
+We aim to predict the **number of steps** in a recipe (**`n_steps`**) using features that are available before the recipe steps are fully finalized. By estimating the complexity of a recipe from its attributes, we can help home cooks choose recipes appropriate for their time constraints and skill levels, and assist recipe creators in refining their dishes for targeted audiences. Since our response variable, `n_steps`, is a continuous numerical value, this is a **regression problem**, since we are predicting a numerical outcome.
 
-### Problem Type
-
-Since our target variable, `n_steps`, is a continuous numerical value, this is a **regression problem**. We are not classifying recipes into discrete categories; rather, we are predicting a numerical outcome (the number of steps).
-
-### Response Variable
-
-- **Response Variable**: `n_steps` (Number of steps in a recipe)
-
-We chose `n_steps` because it serves as a direct measure of recipe complexity. Understanding what influences complexity can reveal insights into how preparation time, nutritional factors, and the diversity of tags (e.g., dietary restrictions, meal types, cuisines) shape the effort required to complete a dish.
+We chose `n_steps` because it serves as a direct measure of recipe complexity. Understanding what influences complexity can reveal insights into how preparation time, nutritional factors, and the diversity of tags (dietary restrictions, meal types, cuisines) shape the effort required to prepare a dish.
 
 ### Features and Time of Prediction Justification
 
@@ -153,16 +138,7 @@ By relying solely on information available prior to detailing the step-by-step i
 
 ### Evaluation Metric
 We will use both **Mean Absolute Error** and **R-squared (R²)** as our evaluation metric. 
-R² is a standard metric for regression tasks and has several advantages:
-- **Measures Explained Variance**: R² indicates the proportion of the variance in the target variable (the number of steps) that is explained by the model, providing a clear understanding of the model's explanatory power. 
-- **Interpretability**: R² values range from 0 to 1 (or can be negative for poor models), making it easy to interpret how well the model fits the data. A higher R² means the model's predictions are more aligned with the actual values.
-- 
-R² allows us to assess how well our model is capturing the relationship between the number of ingredients, calories, nutrition, and the number of steps in a recipe. A higher R² indicates that the model is effectively explaining the variability in the number of steps.
-MAE offers key advantages for our dataset as well
-- **Interpretability**: MAE is easy to understand because it's the average of absolute differences between predicted and actual values. This gives a direct, intuitive sense of how far off the model’s predictions are, on average.
-Together, R² will help us understand how well the model captures the overall variance in the data, while MAE will provide a sense of the average error magnitude, ensuring both model fit and prediction accuracy are considered.
-
----
+R² is a standard metric for regression tasks and has several advantages. One of them is R² indicates the proportion of the variance in the target variable that is explained by the model, which provides a clear understanding of the model's explanatory power. R² values range from 0 to 1 (or can be negative for poor models), which also makes it easy to interpret how well the model fits the data. A higher R² means the model's predictions are more aligned with the actual values. MAE is a metric used to measure the average magnitude of errors between predicted values and actual values and also has many advantages in this scenario. One of them is MAE is easy to understand because it's the average of absolute differences between predicted and actual values. This gives a direct, intuitive sense of how far off the model’s predictions are, on average. Together, R² will help us understand how well the model captures the overall variance in the data, while MAE will provide a sense of the average error magnitude, which will make sure both model fit and prediction accuracy are considered.
 
 With our prediction problem defined, our response variable chosen, and our metric justified, we have a clear path forward. Next, we will build baseline and final models to predict `n_steps` and evaluate how well our model performs in capturing the complexity of recipes.
 
