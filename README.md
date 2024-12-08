@@ -93,7 +93,6 @@ The trend shows that as the number of ingredients increases, the number of steps
 
 We also created a pivot table to examine the relationship between the number of ingredients and the average number of steps in recipes. This analysis helps identify how the recipe complexity changes with varying ingredient counts. The first few rows of the pivot table are shown below:
 
-Pivot Table: `n_ingredients` and `n_steps`
 |   n_ingredients |   n_steps |
 |----------------:|----------:|
 |               1 |   7.57143 |
